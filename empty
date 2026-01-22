@@ -1,0 +1,11 @@
+ <InputGroup size="sm" maxW="12rem" mb={6}>
+        <InputLeftElement pointerEvents="none">
+          <Icon as={SearchIcon} />
+        </InputLeftElement>
+        <Input
+          type="text"
+          variant="filled"
+          placeholder="Task name"
+          borderRadius={5}
+        />
+      </InputGroup>
