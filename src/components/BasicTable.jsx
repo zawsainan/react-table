@@ -1,15 +1,24 @@
 import {
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { data } from "../../data";
 import { columns } from "./columns";
+import { useState } from "react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 export default function BasicTabe() {
+  const [sorting, setSorting] = useState([]);
   const table = useReactTable({
     data,
     columns,
+    state: {
+      sorting,
+    },
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
   });
   return (
     <div className="mx-auto w-full max-w-7xl overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -19,13 +28,18 @@ export default function BasicTabe() {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
+                  onClick={header.column.getToggleSortingHandler()}
                   key={header.id}
-                  className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-700"
+                  className="cursor-pointer px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-700"
                 >
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext(),
                   )}
+                  {{
+                    asc: <ArrowUp className="w-4 h-4 ml-1 inline" />,
+                    desc: <ArrowDown className="w-4 h-4 ml-1 inline" />,
+                  }[header.column.getIsSorted()] ?? null}
                 </th>
               ))}
             </tr>
