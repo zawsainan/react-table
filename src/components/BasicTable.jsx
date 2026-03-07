@@ -1,6 +1,7 @@
 import {
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -11,19 +12,23 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import Searchbar from "./SearchBar";
 export default function BasicTabe() {
   const [sorting, setSorting] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
+      globalFilter,
     },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
+    getFilteredRowModel: getFilteredRowModel(),
+    onGlobalFilterChange: setGlobalFilter,
   });
   return (
     <div className="mx-auto p-6 mt-10 w-full max-w-7xl overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
-      <Searchbar />
+      <Searchbar value={globalFilter} setValue={setGlobalFilter} />
       <table className="min-w-full divide-y divide-slate-200">
         <thead className="bg-slate-100">
           {table.getHeaderGroups().map((headerGroup) => (
