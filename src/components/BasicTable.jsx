@@ -9,6 +9,7 @@ import {
 import { data } from "../../data";
 import { columns } from "./columns";
 import { useState } from "react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 export default function BasicTable() {
   const [sorting, setSorting] = useState([]);
@@ -54,6 +55,10 @@ export default function BasicTable() {
                     header.column.columnDef.header,
                     header.getContext(),
                   )}
+                  {{
+                    asc: <ArrowUp className="w-4 h-4 ml-1 inline" />,
+                    desc: <ArrowDown className="w-4 h-4 ml-1 inline" />,
+                  }[header.column.getIsSorted()] ?? null}
                 </th>
               ))}
             </tr>
