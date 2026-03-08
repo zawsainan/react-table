@@ -1,6 +1,7 @@
 import {
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -11,12 +12,16 @@ import { useState } from "react";
 
 export default function BasicTable() {
   const [sorting, setSorting] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
+      globalFilter,
     },
+    getFilteredRowModel: getFilteredRowModel(),
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -24,6 +29,17 @@ export default function BasicTable() {
   });
   return (
     <div className="max-w-6xl mx-auto pt-8">
+      <div className="my-4 flex justify-end">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          className="w-full max-w-sm px-4 py-2 border border-gray-300 rounded-lg shadow-sm
+               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+               placeholder-gray-400 text-sm"
+        />
+      </div>
       <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden">
         <thead className="bg-gray-100">
           {table.getHeaderGroups().map((headerGroup) => (
