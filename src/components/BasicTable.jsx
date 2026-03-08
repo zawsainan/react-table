@@ -2,17 +2,25 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { data } from "../../data";
 import { columns } from "./columns";
+import { useState } from "react";
 
 export default function BasicTable() {
+  const [sorting, setSorting] = useState([]);
   const table = useReactTable({
     data,
     columns,
+    state: {
+      sorting,
+    },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
   });
   return (
     <div className="max-w-6xl mx-auto pt-8">
@@ -22,8 +30,9 @@ export default function BasicTable() {
             <tr key={headerGroup.id} className="border-b border-gray-200">
               {headerGroup.headers.map((header) => (
                 <th
+                  onClick={header.column.getToggleSortingHandler()}
                   key={header.id}
-                  className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                  className="select-none cursor-pointer px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                 >
                   {flexRender(
                     header.column.columnDef.header,
